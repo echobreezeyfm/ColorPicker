@@ -1,0 +1,295 @@
+/* EchoBreeze Embeddable Color Picker (ebecp) v1.1.0 CSS */
+#ebecp-module-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0s 0.3s;
+    z-index: 1000;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+#ebecp-module-wrapper.is-open {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
+}
+#ebecp-module-wrapper .picker-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(4px);
+}
+#ebecp-module-wrapper .popup-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+}
+#ebecp-module-wrapper.is-open .popup-wrapper {
+    transform: scale(1);
+}
+#ebecp-module-wrapper #ebecp-comparison-background {
+    position: relative;
+    padding: 4rem;
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    transition: background-color 0.3s ease;
+}
+#ebecp-module-wrapper #ebecp-comparison-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+#ebecp-module-wrapper #ebecp-change-bg-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+    background: rgba(255,255,255,0.8);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+}
+#ebecp-module-wrapper #ebecp-change-bg-btn svg {
+    width: 100%;
+    height: 100%;
+    fill: #555;
+}
+#ebecp-module-wrapper .comparison-swatch {
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.1);
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+    width: 200px;
+    height: 200px;
+}
+#ebecp-module-wrapper .comparison-swatch-overlay {
+    width: 100%;
+    height: 100%;
+}
+#ebecp-module-wrapper .comparison-label {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    text-shadow: 0 0px 4px rgba(0,0,0,0.4);
+}
+#ebecp-module-wrapper #ebecp-original-swatch-wrapper {
+    cursor: pointer;
+}
+#ebecp-module-wrapper .transparency-indicator {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 18px;
+    height: 18px;
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+}
+#ebecp-module-wrapper .transparency-indicator.is-visible {
+    opacity: 1;
+}
+#ebecp-module-wrapper.mode-background #ebecp-comparison-panel {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0s 0.3s;
+}
+#ebecp-module-wrapper #ebecp-change-bg-btn .icon-palette {
+    display: block;
+}
+#ebecp-module-wrapper #ebecp-change-bg-btn .icon-swatch {
+    display: none;
+}
+#ebecp-module-wrapper.mode-background #ebecp-change-bg-btn .icon-palette {
+    display: none;
+}
+#ebecp-module-wrapper.mode-background #ebecp-change-bg-btn .icon-swatch {
+    display: block;
+}
+#ebecp-module-wrapper .color-picker-container {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+#ebecp-module-wrapper #ebecp-restore-btn {
+    background-color: #f0f2f5;
+    border: 1px solid #ddd;
+    color: #555;
+    padding: 8px 0;
+    width: 100%;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 5px;
+    font-size: 16px;
+}
+#ebecp-module-wrapper .color-wheel-wrapper {
+    position: relative;
+    width: 100%;
+    padding-top: 100%;
+    height: 0;
+    cursor: crosshair;
+}
+#ebecp-module-wrapper #ebecp-color-wheel,
+#ebecp-module-wrapper #ebecp-lightness-slider {
+    border-radius: 50%;
+}
+#ebecp-module-wrapper #ebecp-color-wheel:focus,
+#ebecp-module-wrapper #ebecp-lightness-slider:focus {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+}
+#ebecp-module-wrapper #ebecp-lightness-slider,
+#ebecp-module-wrapper #ebecp-lightness-slider:focus {
+    border-radius: 8px;
+}
+#ebecp-module-wrapper #ebecp-color-wheel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+#ebecp-module-wrapper #ebecp-picker-cursor {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border: 2px solid white;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1.5px rgba(0,0,0,0.5);
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+}
+#ebecp-module-wrapper #ebecp-eyedropper-btn {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(4px);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+}
+#ebecp-module-wrapper #ebecp-eyedropper-btn svg {
+    width: 100%;
+    height: 100%;
+    stroke: #333;
+}
+#ebecp-module-wrapper .slider-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+#ebecp-module-wrapper .slider-wrapper label {
+    font-size: 14px;
+    color: #9f9f9f;
+}
+#ebecp-module-wrapper .lightness-slider-wrapper {
+    position: relative;
+    width: 100%;
+    height: 16px;
+    cursor: pointer;
+}
+#ebecp-module-wrapper #ebecp-lightness-slider {
+    width: 100%;
+    height: 100%;
+}
+#ebecp-module-wrapper #ebecp-lightness-cursor {
+    position: absolute;
+    top: 50%;
+    width: 4px;
+    height: 110%;
+    background: white;
+    border: 1px solid #555;
+    border-radius: 2px;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    box-shadow: 0 0 2px rgba(0,0,0,0.5);
+}
+#ebecp-module-wrapper #ebecp-color-preview {
+    width: 100%;
+    height: 45px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background-image: linear-gradient(45deg, #ccc 25%, transparent 25%), linear-gradient(135deg, #ccc 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #ccc 75%), linear-gradient(135deg, transparent 75%, #ccc 75%);
+    background-size: 10px 10px;
+}
+#ebecp-module-wrapper #ebecp-preview-overlay {
+    width: 100%;
+    height: 100%;
+    border-radius: 7px;
+}
+#ebecp-module-wrapper .alpha-slider-container {
+    width: 100%;
+    height: 20px;
+    display: flex;
+    align-items: center;
+}
+#ebecp-module-wrapper #ebecp-alpha-slider {
+    width: 100%;
+    margin: 0;
+}
+/* 这是新的、修正后的代码 */
+#ebecp-module-wrapper .color-outputs {
+    display: flex;
+    flex-direction: column;
+    gap: 4px; /* <-- 修改这里来调整HEXA, RGBA等各行之间的间距 */
+    margin-top: 5px; 
+}
+
+#ebecp-module-wrapper .output-group {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    gap: 5px; 
+}
+#ebecp-module-wrapper .output-group label {
+    width: 40px;
+    color: #9f9f9f;
+    flex-shrink: 0;
+    text-align: right;
+    font-weight: 500;
+}
+#ebecp-module-wrapper .output-group input {
+    flex-grow: 1;
+    font-family: "SF Mono", "Courier New", monospace;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 6px 8px;
+    font-size: 14px;
+    cursor: pointer;
+    min-width: 0;
+}
