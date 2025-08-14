@@ -5,51 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EchoBreeze Color Picker - 演示页面</title>
     
-    <!-- 步骤1: 引入核心CSS文件 -->
-    <link rel="stylesheet" href="dist/ebecp-color-picker.css">
+    <link rel="stylesheet" href="ebecp-color-picker.css">
+    
+    <!-- 核心修正：为 script 标签添加 defer 属性 -->
+    <script src="ebecp-color-picker.js" defer></script>
     
     <style>
-        /* 这是演示页面的专属样式，与模块本身无关 */
         :root { --swatch-size: 80px; --panel-bg-color: #f0f2f5; }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--panel-bg-color); padding: 2rem; }
-        .main-content { max-width: 900px; margin: auto; text-align: center; color: #5e5e5e;}
+        .main-content { max-width: 900px; margin: auto; text-align: center; }
         #swatch-container { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 2rem; }
         .color-swatch { width: var(--swatch-size); height: var(--swatch-size); border-radius: 12px; cursor: pointer; border: 2px solid rgba(0,0,0,0.1); display: flex; flex-direction: column; justify-content: flex-end; padding: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .swatch-label { font-size: 13px; font-weight: 600; color: white; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
         #add-swatch-btn { width: var(--swatch-size); height: var(--swatch-size); border-radius: 12px; border: 2px dashed #aaa; background: #fff; color: #aaa; font-size: 3rem; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-        .language-switcher {
-            margin-top: 2rem;
-            display: inline-flex; /* 1. 将容器变为flex布局 */
-            gap: 10px;            /* 2. 用gap来控制按钮间距 */
-        }
-        .language-switcher button {
-            padding: 4px 16px;
-            font-size: 14px;
-            /* margin: 0 5px;  <-- 我们现在用gap了，所以可以删掉这个 */
-            cursor: pointer;
-            border: 1px solid #ccc;
-            background-color: #fff;
-            color: #525252;
-            border-radius: 6px;
-            min-width: 100px;
-            /* 3. 让按钮在flex布局中垂直居中 */
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .language-switcher button.active {
-            background-color: #007bff;
-            color: white;
-            border-color: #007bff;
-        }
+        .language-switcher { margin-top: 2rem; display: inline-flex; gap: 10px; }
+        .language-switcher button { padding: 8px 16px; font-size: 14px; cursor: pointer; border: 1px solid #ccc; background-color: #fff; color: #333; border-radius: 6px; min-width: 100px; display: inline-flex; align-items: center; justify-content: center; }
+        .language-switcher button.active { background-color: #007bff; color: white; border-color: #007bff; }
     </style>
 </head>
 <body>
     
     <main class="main-content">
-        <h1>EchoBreeze Color Picker 模块</h1>
-        <p>
+        <h1 id="main-title">EchoBreeze Color Picker 模块</h1>
+        <p id="main-subtitle">
             点击颜色块进行编辑，或添加新颜色。尝试切换下方语言查看模块内部的i18n效果。<br>
             Click a swatch to edit, or click "+" to add a new one. Try switching languages below to see the i18n effect inside the module.
         </p>
@@ -64,44 +42,21 @@
         </div>
     </main>
 
-    <!-- 步骤2: 粘贴模块的HTML结构 (从 ebecp-color-picker.html) -->
+    <!-- 模块的HTML结构将由JS加载 -->
     <div id="ebecp-module-wrapper">
-        <div class="picker-overlay"></div>
-        <div class="popup-wrapper">
-            <div id="ebecp-comparison-background">
-                <div id="comparison-panel">
-                    <div id="ebecp-original-swatch-wrapper" class="comparison-swatch" data-i18n-title-key="resetTitle"><div id="ebecp-original-swatch" class="comparison-swatch-overlay"></div><span class="comparison-label" data-i18n-key="original"></span><div class="transparency-indicator" id="ebecp-original-indicator"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="10" style="stroke-dasharray: 5 5;"></circle></svg></div></div>
-                    <div id="ebecp-previous-swatch-wrapper" class="comparison-swatch"><div id="ebecp-previous-swatch" class="comparison-swatch-overlay"></div><span class="comparison-label" data-i18n-key="previous"></span><div class="transparency-indicator" id="ebecp-previous-indicator"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="10" style="stroke-dasharray: 5 5;"></circle></svg></div></div>
-                    <div id="ebecp-current-swatch-wrapper" class="comparison-swatch"><div id="ebecp-current-swatch" class="comparison-swatch-overlay"></div><span class="comparison-label" data-i18n-key="current"></span><div class="transparency-indicator" id="ebecp-current-indicator"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="10" style="stroke-dasharray: 5 5;"></circle></svg></div></div>
-                </div>
-                <button id="ebecp-change-bg-btn" data-i18n-title-key="changeBgTitle">
-                    <svg class="icon-palette" viewBox="0 0 24 24" fill="currentColor"><path d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2ZM6,12a6,6,0,0,1,6-6V18A6,6,0,0,1,6,12Z"/></svg>
-                    <svg class="icon-swatch" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2z"/></svg>
-                </button>
-            </div>
-            <div class="color-picker-container">
-                <div class="color-wheel-wrapper"><canvas id="ebecp-color-wheel" tabindex="0"></canvas><div id="ebecp-picker-cursor"></div><button id="ebecp-eyedropper-btn" data-i18n-title-key="eyedropperTitle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg></button></div>
-                <div class="slider-wrapper"><label for="ebecp-lightness-slider" data-i18n-key="brightness"></label><div class="lightness-slider-wrapper"><canvas id="ebecp-lightness-slider" tabindex="0"></canvas><div id="ebecp-lightness-cursor"></div></div></div>
-                <div id="ebecp-color-preview"><div id="ebecp-preview-overlay"></div></div>
-                <div class="slider-wrapper"><label for="ebecp-alpha-slider" data-i18n-key="transparency"></label><div class="alpha-slider-container"><input type="range" id="ebecp-alpha-slider" min="0" max="1" step="0.01" value="1"></div></div>
-                <div class="color-outputs" aria-live="polite"><div class="output-group"><label>HEXA</label><input type="text" id="ebecp-hexa-code" readonly></div><div class="output-group"><label>RGBA</label><input type="text" id="ebecp-rgba-code" readonly></div><div class="output-group"><label>HSLA</label><input type="text" id="ebecp-hsla-code" readonly></div><div class="output-group"><label>HSV</label><input type="text" id="ebecp-hsv-code" readonly></div><div class="output-group"><label>Float</label><input type="text" id="ebecp-float-code" readonly></div><div class="output-group"><label>Int</label><input type="text" id="ebecp-int-code" readonly></div></div>
-                <button id="ebecp-restore-btn" data-i18n-key="restoreColor"></button>
-            </div>
-        </div>
+        <!-- The content of ebecp-color-picker.html will be loaded here by the main page script -->
     </div>
-    
-    <!-- 步骤3: 引入核心JS文件 -->
-    <script src="dist/ebecp-color-picker.js"></script>
     
     <!-- 演示页面的交互逻辑 -->
     <script>
+        // We wait for the DOM to be fully loaded before running any scripts
         document.addEventListener('DOMContentLoaded', () => {
             const swatchContainer = document.getElementById('swatch-container');
             const addBtn = document.getElementById('add-swatch-btn');
             const initialColors = ['#3498db', '#e74c3c', '#2ecc71', '#f1c40f'];
             let currentLang = 'zh';
 
-            // --- 颜色转换函数 (从模块中复制，因为演示页面也需要它们) ---
+            // --- Color Conversion Functions (needed for the demo page) ---
             function hslToRgb(h,s,l){let r,g,b;if(s===0)r=g=b=l*255;else{const hue2rgb=(p,q,t)=>{if(t<0)t+=1;if(t>1)t-=1;if(t<1/6)return p+(q-p)*6*t;if(t<1/2)return q;if(t<2/3)return p+(q-p)*(2/3-t)*6;return p};const q=l<0.5?l*(1+s):l+s-l*s;const p=2*l-q;r=hue2rgb(p,q,h+1/3)*255;g=hue2rgb(p,q,h)*255;b=hue2rgb(p,q,h-1/3)*255}return[Math.round(r),Math.round(g),Math.round(b)]}
             function rgbToHex(r,g,b,a){const toHex=c=>('0'+Math.round(c).toString(16)).slice(-2);let hex=`#${toHex(r)}${toHex(g)}${toHex(b)}`;if(a!==1&&a!==undefined)hex+=toHex(a*255);return hex.toUpperCase()}
             
@@ -119,39 +74,52 @@
                 updateSwatchUI(swatch, colorHex);
                 
                 swatch.addEventListener('click', () => {
-                    ColorPickerModule.open({
-                        originalColor: swatch.dataset.originalColor,
-                        currentColor: swatch.dataset.currentColor,
-                        lang: currentLang,
-                        onConfirm: (finalState) => { 
-                            const [r,g,b] = hslToRgb(finalState.h, finalState.s, finalState.l);
-                            const newHex = rgbToHex(r,g,b,finalState.a);
-                            swatch.dataset.currentColor = newHex;
-                            updateSwatchUI(swatch, newHex);
-}
-                    });
+                    // Check if module is loaded
+                    if (window.ColorPickerModule) {
+                        ColorPickerModule.open({
+                            originalColor: swatch.dataset.originalColor,
+                            currentColor: swatch.dataset.currentColor,
+                            lang: currentLang,
+                            onConfirm: (finalState) => { 
+                                const [r,g,b] = hslToRgb(finalState.h, finalState.s, finalState.l);
+                                const newHex = rgbToHex(r,g,b,finalState.a);
+                                swatch.dataset.currentColor = newHex;
+                                updateSwatchUI(swatch, newHex);
+                            }
+                        });
+                    } else {
+                        alert('Color Picker Module is not loaded correctly.');
+                    }
                 });
                 return swatch;
             }
 
-            initialColors.forEach(color => swatchContainer.insertBefore(createSwatch(color), addBtn));
-            addBtn.addEventListener('click', () => {
-                const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
-                swatchContainer.insertBefore(createSwatch(randomColor), addBtn);
-            });
+            // --- Load Module HTML ---
+            fetch('ebecp-color-picker.html')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('ebecp-module-wrapper').innerHTML = html;
+                    
+                    // Now create the swatches, ensuring the module HTML is in place
+                    initialColors.forEach(color => swatchContainer.insertBefore(createSwatch(color), addBtn));
+                    addBtn.addEventListener('click', () => {
+                        const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+                        swatchContainer.insertBefore(createSwatch(randomColor), addBtn);
+                    });
+                });
 
-            // --- i18n 切换逻辑 ---
+            // --- i18n Switcher Logic ---
             const langZhBtn = document.getElementById('lang-zh');
             const langEnBtn = document.getElementById('lang-en');
             langZhBtn.addEventListener('click', () => {
                 currentLang = 'zh';
-                // ColorPickerModule.setLocale('zh'); // You can call this globally if needed
+                if (window.ColorPickerModule) ColorPickerModule.setLocale('zh');
                 langZhBtn.classList.add('active');
                 langEnBtn.classList.remove('active');
             });
             langEnBtn.addEventListener('click', () => {
                 currentLang = 'en';
-                // ColorPickerModule.setLocale('en'); // You can call this globally if needed
+                if (window.ColorPickerModule) ColorPickerModule.setLocale('en');
                 langEnBtn.classList.add('active');
                 langZhBtn.classList.remove('active');
             });
